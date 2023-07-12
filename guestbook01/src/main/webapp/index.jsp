@@ -13,7 +13,7 @@
 <title>방명록</title>
 </head>
 <body>
-	<form action="/guestbook01/add.jsp" method="post">
+	<form action="add.jsp" method="post">
 	<table border=1 width=500>
 		<tr>
 			<td>이름</td><td><input type="text" name="name"></td>
@@ -34,10 +34,10 @@
 	<form action="/guestbook01/deleteform.jsp" method="post">
 	<table width=510 border=1>
 		<tr>
-			<td>[<%=vo.getNo() %>]</td><td><input type="text" name="no"></td>
-			<td><%=vo.getName() %></td><td><input type="text" name="name"></td>
-			<td><%=vo.getPost_date() %><td></td><input type="text" name="date"></td>
-			<td colspan=4 align=right><input type="submit" VALUE=" 삭제 "></td>
+			<td>[<%=vo.getNo() %>]</td>
+			<td><%=vo.getName() %></td>
+			<td><%=vo.getPost_date() %></td>
+			<td><a href="deleteform.jsp?no=<%=vo.getNo() %>">삭제</a></td>
 		</tr>
 		<tr>
 			<td colspan=4><%=vo.getText() %></td>

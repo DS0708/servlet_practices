@@ -18,10 +18,20 @@ public class GuestBookDaoTest {
 //		insert(vo);
 		
 		//findAll test
-//		list();
+		//list();
 		
-		Long no = 4l;
-		delete(no);
+		Long no = 6l;
+		String password = "ds2";
+		//delete(no);
+		
+		delete(no,password);
+	}
+
+	private static void delete(Long no, String password) {
+		// TODO Auto-generated method stub
+		boolean check = new GuestBookDao().delete(no,password);
+		
+		if(!check) System.out.println("delete error");
 	}
 
 	private static void delete(Long no) {

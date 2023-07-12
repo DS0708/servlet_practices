@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-request.setCharacterEncoding("utf-8");
+	request.setCharacterEncoding("utf-8");
 
-//Long no = Long.parseLong(request.getParameter("no"));
-
-String no = request.getParameter("no");
-
-
+	String no = request.getParameter("no");
 %>
 <html>
 <head>
@@ -14,19 +10,18 @@ String no = request.getParameter("no");
 <title>방명록</title>
 </head>
 <body>
-	<form method="post" action="">
-	<input type='hidden' name="id" value="">
+	<form method="post" action="delete.jsp">
+	<input type='hidden' name="no" value=<%=no %>>
 	<table>
 		<tr>
 			<td>비밀번호</td>
 			<td><input type="password" name="password"></td>
 			<td><input type="submit" value="확인"></td>
-			<td><a href="/guestbook01/">메인으로 돌아가기</a></td>
+			<td colspan="3"><a href="/guestbook01/">메인으로 돌아가기</a></td>
 		</tr>
 	</table>
 	</form>
 	
-	<h2><%=no %></h2>
 	
 </body>
 </html>
