@@ -15,6 +15,7 @@ public class GuestBookDao {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		Connection conn = null;
+		PreparedStatement auto_pstmt = null;
 		PreparedStatement pstmt = null;
 		
 		try {
@@ -27,7 +28,10 @@ public class GuestBookDao {
 			conn = DriverManager.getConnection(url,"webdb","webdb");
 			
 			//3. Statement Ready
+			String auto_sql = "Alter table guestbook AUTO_INCREMENT = 0";
 			String sql = "insert into guestbook values (null,?,password(?),?,curdate())";
+			
+			auto_pstmt = conn.prepareStatement(auto_sql);
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. Binding
@@ -36,12 +40,13 @@ public class GuestBookDao {
 			pstmt.setString(3, vo.getText());
 			
 			//5. Execute binding pstmt
+			int auto_count = auto_pstmt.executeUpdate();
 			int count = pstmt.executeUpdate();
 			
 			
 			//6. 결과 처리 
 			//if(count==1) result=true;
-			result = count ==1;
+			result = count ==1 && auto_count ==1;
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("Failed Driver Loading");
@@ -51,6 +56,7 @@ public class GuestBookDao {
 			//7. 자원 정리 
 			try {
 				if(conn!=null)	conn.close();
+				if(auto_pstmt!=null)	auto_pstmt.close();
 				if(pstmt!=null)	pstmt.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -78,7 +84,7 @@ public class GuestBookDao {
 			conn = DriverManager.getConnection(url,"webdb","webdb");		//id, password
 			
 			//3. Statement 생성 
-			String sql = "select no, name, text, post_date from guestbook order by no asc";
+			String sql = "select no, name, text, post_date from guestbook order by no desc";
 			stmt = conn.prepareStatement(sql);
 			
 			//4. SQL 실행  주의 : ';'를 쓰면 안됨.
@@ -186,19 +192,23 @@ public class GuestBookDao {
 			//3. Statement Ready
 			String sql = "delete from guestbook where no=? and password = password(?)";
 			pstmt = conn.prepareStatement(sql);
-			
-			//4. Binding
 			pstmt.setLong(1, no);
 			pstmt.setString(2, password);
-			
-			//5. Execute binding pstmt
 			int count = pstmt.executeUpdate();
 			
 			
-			//6. 결과 처리 
-			//if(count==1) result=true;
-			result = count ==1;
+			int arr_count =0;
+			String[] sql_arr = {
+					"SET @count=0",
+					"UPDATE guestbook SET no=@count:=@count+1"
+			};
+			for(String sql_index : sql_arr) {
+				pstmt = conn.prepareStatement(sql_index);
+				arr_count = pstmt.executeUpdate();
+			}
 			
+			
+			result = count ==1 && arr_count ==1;
 		} catch (ClassNotFoundException e) {
 			System.out.println("Failed Driver Loading");
 		}catch (SQLException e) {
