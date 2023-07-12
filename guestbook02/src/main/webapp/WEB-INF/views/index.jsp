@@ -27,11 +27,12 @@
 	</form>
 	<br>
 	<%
+		int count = list.size()+1;
 		for(GuestBookVo vo : list) {
 	%>
 	<table width=510 border=1>
 		<tr>
-			<td>[<%=vo.getNo() %>]</td>
+			<td>[<%=--count %>]</td>
 			<td><%=vo.getName() %></td>
 			<td><%=vo.getPost_date() %></td>
 			<td><a href="<%=request.getContextPath() %>/gb?a=deleteform&&no=<%=vo.getNo()%>">삭제</a></td>

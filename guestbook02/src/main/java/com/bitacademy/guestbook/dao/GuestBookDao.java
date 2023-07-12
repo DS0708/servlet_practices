@@ -20,20 +20,17 @@ public class GuestBookDao {
 		try {
 			conn = getConnection();
 			
-			String auto_sql = "Alter table guestbook AUTO_INCREMENT = 0";
 			String sql = "insert into guestbook values (null,?,password(?),?,curdate())";
 			
-			auto_pstmt = conn.prepareStatement(auto_sql);
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1,vo.getName());	
 			pstmt.setString(2, vo.getPassword());
 			pstmt.setString(3, vo.getText());
 			
-			int auto_count = auto_pstmt.executeUpdate();
 			int count = pstmt.executeUpdate();
 			
-			result = count ==1 && auto_count ==1;
+			result = count ==1 ;
 			
 		} catch (SQLException e) {
 			System.out.println("Error"+e);
@@ -43,7 +40,6 @@ public class GuestBookDao {
 				if(auto_pstmt!=null)	auto_pstmt.close();
 				if(pstmt!=null)	pstmt.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -139,17 +135,7 @@ public class GuestBookDao {
 			pstmt.setString(2, password);
 			int count = pstmt.executeUpdate();
 			
-			int arr_count =0;
-			String[] sql_arr = {
-					"SET @count=0",
-					"UPDATE guestbook SET no=@count:=@count+1"
-			};
-			for(String sql_index : sql_arr) {
-				pstmt = conn.prepareStatement(sql_index);
-				arr_count = pstmt.executeUpdate();
-			}
-			
-			result = count ==1 && arr_count ==1;
+			result = count ==1 ;
 		} catch (SQLException e) {
 			System.out.println("Error"+e);
 		} finally {
