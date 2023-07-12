@@ -1,4 +1,4 @@
-package com.bitacademy.guestbook.dao.text;
+package com.bitacademy.guestbook.dao.test;
 
 import java.util.ArrayList;
 import java.util.List;
